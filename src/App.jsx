@@ -1,11 +1,10 @@
 import React from 'react';
-import Alert from 'react-bootstrap/lib/Alert';
+import Alert from './Alert.jsx';
 
 const greeting = () => {
   return (
     <div>
-      <Alert bsStyle="info">
-        Hello from React Bootstrap
+      <Alert type="info" initialVisibility={true} message="Hello from React Bootstrap">        
       </Alert>
     </div>
   );
