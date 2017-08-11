@@ -2,9 +2,9 @@ import React from 'react';
 import BootstrapAlert from 'react-bootstrap/lib/Alert';
 import PropTypes from 'prop-types';
 
-import withVisible from './with-visible';
+import withBooleanProp from './with-boolean-prop';
 
-const Alert =  withVisible(({ message, type, hide, visible }) => 
+const Alert =  withBooleanProp('visible')(({ message, type, setVisibleToFalse: hide, visible }) => 
   (visible && message) && (<BootstrapAlert bsStyle={type} onDismiss={hide}>
     {message}
   </BootstrapAlert>));
