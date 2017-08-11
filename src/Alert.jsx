@@ -1,61 +1,32 @@
 import React from 'react';
 import BootstrapAlert from 'react-bootstrap/lib/Alert';
-import { withStateHandlers, branch, renderNothing, compose } from 'recompose';
 import PropTypes from 'prop-types';
 
-const initialVisibilityHandler = ({ initialVisibility }) => ({
-    visible: initialVisibility
-  });
-  
-const closeHandler = {
-    close: () => () => ({
-      visible: false,
-    })
-  };
+import withVisible from './with-visible';
 
-const closeable = withStateHandlers(
-  initialVisibilityHandler, 
-  closeHandler
-);
-
-const hideIfNoDataOrNotVisible = hasNoDataOrNotVisible =>
-  branch(
-    hasNoDataOrNotVisible,
-    renderNothing
-  );
-
-const hideable = hideIfNoDataOrNotVisible(
-  ({message, visible}) => !visible || !message
-)
-
-const Alert =  closeable(hideable(({ message, type, close, visible }) => {
-    if (visible && message) {
-      return (
-        <BootstrapAlert bsStyle={type} onDismiss={close}>
-          {message}
-        </BootstrapAlert>
-      );
-    }
-    return null;
-  }));
-
+const Alert =  withVisible(({ message, type, hide, visible }) => 
+  (visible && message) && (<BootstrapAlert bsStyle={type} onDismiss={hide}>
+    {message}
+  </BootstrapAlert>));
+ 
 Alert.propTypes = {
   /** message to display */
   message: PropTypes.string,
   /** Alert component display type, can be success, warning, danger, info
-   *  Defalt is info
+   *  Default is info
    */
   type: PropTypes.string,
   /**
-   * Initial Visibility for the alert. Defaults to false
+   * Visibility for the alert. 
    */
-  initialVisibility: PropTypes.bool,
+  visible: PropTypes.bool.isRequired,
+  /** @ignore */
+  hide: PropTypes.func,
 };
 
 Alert.defaultProps = {
   message: null,
-  type: 'info',
-  visible: false,
+  type: 'info'
 };
 
 export default Alert;
